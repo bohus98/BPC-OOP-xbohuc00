@@ -64,8 +64,8 @@ class Program
         //Console.WriteLine("Matica 1 - Matica 4:");
         //Console.WriteLine(m1 - m4);
 
-        //Console.WriteLine("Matica 1 * Matica 4:");
-        //Console.WriteLine(m1 * m4);
+        Console.WriteLine("Matica 1 * Matica 4:");
+        Console.WriteLine(m1 * m4);
 
         Console.WriteLine("Determinant Matice 1: " + m1.Determinant());
         Console.WriteLine("Determinant Matice 2: " + m2.Determinant());
