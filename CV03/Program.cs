@@ -71,6 +71,7 @@ class Program
         Console.WriteLine("Determinant Matice 2: " + m2.Determinant());
         Console.WriteLine("Determinant Matice 2: " + m3.Determinant());
         Console.WriteLine("Determinant Matice 7: " + m7.Determinant());
+
         Console.WriteLine("Matica 1 != Matica 2:");
         Console.WriteLine(m1 != m2);
         Console.WriteLine("Matica 1 == Matica 2:");
