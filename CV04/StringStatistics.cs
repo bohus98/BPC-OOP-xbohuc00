@@ -154,27 +154,7 @@ namespace cv04
             return wordList;
         }
 
-        public bool IsInfected()
-        {
-            if (Text.ToLower().Contains("covid"))
-            {
-                return true;
-            }
-            else if (Text.ToLower().Contains("covid-19"))
-            {
-                return true;
-            }
-            else if (Text.ToLower().Contains("sars-cov-2"))
-            {
-                return true;
-            }
-            else
-            {
-            return false;
-            }
-        }
-
-        /// <returns>Returns StringBuilder with items from arraylist and every word is divided by comma.</returns>
+        
         public StringBuilder PrintArrayList(ArrayList arrlist)
         {
             StringBuilder text = new StringBuilder();

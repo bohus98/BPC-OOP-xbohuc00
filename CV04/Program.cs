@@ -14,7 +14,8 @@ namespace cv04
  + "ktere jsou od sebe oddeleny znakem LF (Line Feed).\n"
  + "Je tu i nejaky ten vykricnik! Pro ucely testovani i otaznik?\n"
  + "Toto je jen zkratka zkr. ale ne konec vety. A toto je\n"
- + "posledni veta Covid-19!";
+ + "posledni veta!";
+
             StringStatistics s = new StringStatistics(testText);
             Console.WriteLine("Konichiva");
             Console.WriteLine("Number of words: {0}", s.NumberOfWords());
@@ -24,7 +25,6 @@ namespace cv04
             Console.WriteLine("Shortest words: {0}", s.PrintArrayList(s.ShortestWords()));
             Console.WriteLine("Most common words: {0}", s.PrintArrayList(s.MostCommonWords()));
             Console.WriteLine("Sorted words: {0}", s.PrintArrayList(s.SortedArray()));
-            Console.WriteLine("Is infected: {0}", s.IsInfected());
             Console.ReadLine();
         }
     }
