@@ -2,8 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-
+using System.Text.RegularExpressions;
 
 namespace cv04
 {
@@ -16,168 +15,51 @@ namespace cv04
             this.Text = text;
         }
 
-        /// <returns>Returns Integrer with number of words.</returns>
         public int NumberOfWords()
         {
-            char[] delimiterChars = { ' ', '\n' };
-            int words = Text.Split(delimiterChars).Length;
-            return words;
+            char[] delimiters = { ' ', '\n' };
+            return Text.Split(delimiters, StringSplitOptions.RemoveEmptyEntries).Length;
         }
 
-        /// <returns>Returns Integer with number of row.</returns>
-        public int NumberOfRow()
+        public int NumberOfLines()
         {
-            int row = Text.Split('\n').Length;
-            return row;
+            return Text.Split('\n').Length;
         }
 
-        /// <returns>Returns Integer number of sentences.</returns>
         public int NumberOfSentences()
         {
-            char[] delimiterChars = { '.', '?', '!' };
-            string text = Text.Replace("\n", "").Replace(" ", "");
-            string[] row = text.Split(delimiterChars);
-            int counter = 0;
-            for (int i = 0; i < row.Length - 2; i++)
-            {
-                if (i == 0 && Char.IsUpper(row[i][0]))
-                {
-                    counter++;
-                }
-                if (Char.IsUpper(row[i + 1][0]))
-                {
-                    counter++;
-                }
-            }
-            return counter;
+            return Regex.Matches(Text, @"[.!?]+").Count;
         }
 
-        /// <returns>Returns arrayList of longest words.</returns>
-        public ArrayList LongestWords()
+        public string[] LongestWords()
         {
-            ArrayList longestWords = new ArrayList();
-            string text = Text.Replace("\n", " ").Replace("!", "").Replace("?", "").Replace(",", "").Replace(".", "").Replace("(", "").Replace(")", "");
-            string[] words = text.Split(' ');
-            int biggestLenght = 0;
-
-            foreach (var word in words)
-            {
-                if (word.Length > biggestLenght)
-                {
-                    biggestLenght = word.Length;
-                    longestWords.Clear();
-                    longestWords.Add(word);
-                }
-                else if (word.Length == biggestLenght)
-                {
-                    longestWords.Add(word);
-                }
-            }
-
-            return longestWords;
+            var words = Regex.Split(Text, @"\W+");
+            var maxLength = words.Max(word => word.Length);
+            return words.Where(word => word.Length == maxLength).ToArray();
         }
 
-        /// <returns>Returns arrayList of shortest words.</returns>
-        public ArrayList ShortestWords()
+        public string[] ShortestWords()
         {
-            ArrayList longestWords = new ArrayList();
-            string text = Text.Replace("\n", " ").Replace("!", "").Replace("?", "").Replace(",", "").Replace(".", "").Replace("(", "").Replace(")", "");
-            string[] words = text.Split(' ');
-            int shortestLenght = int.MaxValue;
-
-            foreach (var word in words)
-            {
-                if (word.Length < shortestLenght)
-                {
-                    shortestLenght = word.Length;
-                    longestWords.Clear();
-                    longestWords.Add(word);
-                }
-                else if (word.Length == shortestLenght)
-                {
-                    longestWords.Add(word);
-                }
-            }
-
-            return longestWords;
+            var words = Regex.Split(Text, @"\W+");
+            var minLength = words.Where(word => !string.IsNullOrWhiteSpace(word)).Min(word => word.Length);
+            return words.Where(word => word.Length == minLength).ToArray();
         }
 
-        // using dictionary something like hashmap and every occurrence add value by 1 and after finding biggest value
-        /// <returns>Returns arrayList of most common word.</returns>
-        public ArrayList MostCommonWords()
+        public string[] MostCommonWords()
         {
-            var dict = new Dictionary<string, int>();
-            ArrayList commonWords = new ArrayList();
-            string text = Text.Replace("\n", " ").Replace("!", "").Replace("?", "").Replace(",", "").Replace(".", "").Replace("(", "").Replace(")", "");
-            string[] words = text.Split(' ');
-            int ocurencies = 0;
-            foreach (var item in words)
-            {
-                if (dict.ContainsKey(item))
-                {
-                    dict[item]++;
-                }
-                else
-                {
-                    dict.Add(item, 1);
-                }
-            }
-
-            foreach (var key in dict)
-            {
-                if (key.Value > ocurencies)
-                {
-                    ocurencies = key.Value;
-                    commonWords.Clear();
-                    commonWords.Add(key.Key);
-                }
-                else if (key.Value == ocurencies)
-                {
-                    commonWords.Add(key.Key);
-                }
-            }
-
-            return commonWords;
+            var words = Regex.Split(Text, @"\W+");
+            var wordCounts = words.GroupBy(word => word.ToLower())
+                                  .OrderByDescending(group => group.Count())
+                                  .Select(group => group.Key)
+                                  .ToArray();
+            return wordCounts;
         }
 
-        /// <returns>Returns sorted arrayList of words.</returns>
-        public ArrayList SortedArray()
+        public string[] AlphabeticallySortedWords()
         {
-            ArrayList wordList = new ArrayList();
-            string text = Text.Replace("\n", " ").Replace("!", "").Replace("?", "").Replace(",", "").Replace(".", "").Replace("(", "").Replace(")", "");
-            string[] words = text.Split(' ');
-            foreach (var item in words)
-            {
-                wordList.Add(item);
-            }
-            wordList.Sort();
-            return wordList;
+            var words = Regex.Split(Text, @"\W+");
+            Array.Sort(words, StringComparer.InvariantCultureIgnoreCase);
+            return words;
         }
-
-        
-        public StringBuilder PrintArrayList(ArrayList arrlist)
-        {
-            StringBuilder text = new StringBuilder();
-            if (arrlist.Count == 1)
-            {
-                text.Append(arrlist[0]);
-            }
-            else
-            {
-                foreach (var item in arrlist)
-                {
-                    text.Append(item).Append(", ");
-                }
-            }
-            return text;
-        }
-
-
-
-        public override string ToString()
-        {
-            return this.Text;
-        }
-
     }
 }
