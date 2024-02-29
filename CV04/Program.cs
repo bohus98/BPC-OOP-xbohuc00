@@ -12,7 +12,6 @@ namespace cv04
                              + "Toto je jen zkratka zkr. ale ne konec vety. A toto je\n"
                              + "posledni veta!";
 
-
             StringStatistics s = new StringStatistics(testText);
             Console.WriteLine("Pocet slov: {0}", s.NumberOfWords());
             Console.WriteLine("Pocet riadkov: {0}", s.NumberOfLines());

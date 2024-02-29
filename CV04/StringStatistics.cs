@@ -60,7 +60,6 @@ namespace cv04
         }
 
         public string[] AlphabeticallySortedWords()
-
         {
             var words = Regex.Split(Text, @"\W+");
             Array.Sort(words, StringComparer.InvariantCultureIgnoreCase);
