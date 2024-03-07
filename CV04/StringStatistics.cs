@@ -28,7 +28,11 @@ namespace cv04
 
         public int NumberOfSentences()
         {
-            return Regex.Matches(Text, @"[.!?]+").Count;
+            var sentenceEndRegex = @"(?<=[.!?])\s+(?=\p{Lu})";
+
+            var sentences = Regex.Split(Text, sentenceEndRegex);
+
+            return sentences.Length;
         }
 
         public string[] LongestWords()
@@ -45,14 +49,14 @@ namespace cv04
             return words.Where(word => word.Length == minLength).ToArray();
         }
 
-        public string[] MostCommonWords()
+        public string MostCommonWord()
         {
             var words = Regex.Split(Text, @"\W+");
-            var wordCounts = words.GroupBy(word => word.ToLower())
+            var mostCommonWord = words.GroupBy(word => word.ToLower())
                                   .OrderByDescending(group => group.Count())
                                   .Select(group => group.Key)
-                                  .ToArray();
-            return wordCounts;
+                                  .FirstOrDefault();
+            return mostCommonWord;
         }
 
         public string[] AlphabeticallySortedWords()

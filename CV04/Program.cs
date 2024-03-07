@@ -13,13 +13,13 @@ namespace cv04
                              + "posledni veta!";
 
             StringStatistics s = new StringStatistics(testText);
-            Console.WriteLine("Number of words: {0}", s.NumberOfWords());
-            Console.WriteLine("Number of rows: {0}", s.NumberOfLines());
-            Console.WriteLine("Number of sentences: {0}", s.NumberOfSentences());
-            Console.WriteLine("Longest words: {0}", string.Join(", ", s.LongestWords()));
-            Console.WriteLine("Shortest words: {0}", string.Join(", ", s.ShortestWords()));
-            Console.WriteLine("Most common words: {0}", string.Join(", ", s.MostCommonWords()));
-            Console.WriteLine("Sorted words: {0}", string.Join(", ", s.AlphabeticallySortedWords()));
+            Console.WriteLine("Pocet slov: {0}", s.NumberOfWords());
+            Console.WriteLine("Pocet riadkov: {0}", s.NumberOfLines());
+            Console.WriteLine("Pocet viet: {0}", s.NumberOfSentences());
+            Console.WriteLine("Najdlhsie slovo: {0}", string.Join(", ", s.LongestWords()));
+            Console.WriteLine("Najkradsie slovo: {0}", string.Join(", ", s.ShortestWords()));
+            Console.WriteLine("Najcastejsie slova: {0}", string.Join(", ", s.MostCommonWord()));
+            Console.WriteLine("Zoradene slova: {0}", string.Join(", ", s.AlphabeticallySortedWords()));
             Console.ReadLine();
         }
     }
