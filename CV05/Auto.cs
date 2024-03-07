@@ -12,14 +12,14 @@ namespace CV05
         protected double VelikostNadrze { get; private set; }
         protected double StavNadrze { get; set; }
         protected TypPaliva Palivo { get; private set; }
-        protected int MaxOsob { get; }
-        protected double MaxNaklad { get; }
+        public static int MaxOsob { get; set; }
+        public static double MaxNaklad { get; set; }
 
         // Metóda pre kontrolu nastavenia vlastností PrepravovanyNaklad a PrepravovaneOsoby
-        protected void KontrolaPrepravy(double hodnota, double maxHodnota)
+        public void KontrolaPrepravy(double hodnota, double maxHodnota)
         {
             if (hodnota > maxHodnota)
-                throw new ArgumentOutOfRangeException($"Hodnota prekračuje maximálnu povolenú hodnotu {maxHodnota}.");
+                throw new ArgumentException($"Hodnota prekračuje maximálnu povolenú hodnotu {maxHodnota}.");
         }
 
         // Metóda na natankovanie
