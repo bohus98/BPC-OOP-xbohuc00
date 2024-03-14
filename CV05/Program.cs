@@ -6,15 +6,14 @@ namespace CV05
     {
         static void Main(string[] args)
         {
-            try
-            {
+            
                 // Demonštrácia použitia tried
                 var osobniAuto = new Osobni(50, Auto.TypPaliva.Benzin, 5);
                 Console.WriteLine("Osobné auto:");
                 Console.WriteLine(osobniAuto);
                 Console.WriteLine();
 
-                var nakladniAuto = new Nakladni(100, Auto.TypPaliva.Nafta, 500);
+                var nakladniAuto = new Nakladni(100, Auto.TypPaliva.Nafta, 200);
                 Console.WriteLine("Nákladné auto:");
                 Console.WriteLine(nakladniAuto);
                 Console.WriteLine();
@@ -25,9 +24,13 @@ namespace CV05
                 autoWithRadio.Radio.NastavPredvolbu(1, 98.5);
                 autoWithRadio.Radio.NastavPredvolbu(2, 102.3);
                 autoWithRadio.Radio.PreladNaPredvolbu(1);
-                Console.WriteLine(autoWithRadio);
+                
                 Console.WriteLine($"Naladený kmitočet: {autoWithRadio.Radio.NaladenyKmitocet}, Radio zapnuté: {autoWithRadio.Radio.RadioZapnuto}");
                 Console.WriteLine();
+
+            try
+            {
+                
 
                 Console.WriteLine("Zapínanie autorádia:");
                 autoWithRadio.Radio.ZapniRadio();
@@ -39,20 +42,77 @@ namespace CV05
                 Console.WriteLine($"Radio zapnuté: {autoWithRadio.Radio.RadioZapnuto}");
                 Console.WriteLine();
 
-                Console.WriteLine("Pokus o natankovanie nesprávneho paliva:");
-                autoWithRadio.Natankuj(Auto.TypPaliva.Nafta, 10); // Pokus o natankovanie iného paliva ako je nastavené
-                Console.WriteLine();
-
-                Console.WriteLine("Pokus o natankovanie do plnej nádrže:");
-                autoWithRadio.Natankuj(Auto.TypPaliva.Benzin, 100); // Pokus o natankovanie do plnej nádrže
-                Console.WriteLine();
-
-                
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Chyba: {ex.Message}");
             }
+
+            
+                  
+            try
+            {
+                Console.WriteLine("Pokus o natankovanie nesprávneho paliva:");
+                autoWithRadio.Natankuj(Auto.TypPaliva.Nafta, 10); // Pokus o natankovanie iného paliva ako je nastavené
+                
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Chyba: {ex.Message}");
+                Console.WriteLine();
+            }
+
+            try
+            {
+                Console.WriteLine("Pokus o natankovanie do plnej nádrže:");
+                osobniAuto.Natankuj(Auto.TypPaliva.Benzin, 150); // Pokus o natankovanie do plnej nádrže
+                
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Chyba: {ex.Message}");
+                Console.WriteLine();
+            }
+            
+            try
+            {
+                Console.WriteLine("Kontrola nakladu:");
+                nakladniAuto.KontrolaPrepravy(1000, Nakladni.MaxNaklad);
+                
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Chyba: {ex.Message}");
+                Console.WriteLine();
+            }
+
+            try
+            {
+                Console.WriteLine("Kontrola pasazierov:");
+                osobniAuto.KontrolaPrepravy(6, Auto.MaxOsob);
+                
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Chyba: {ex.Message}");
+                Console.WriteLine();
+            }
+
+            try
+            {
+                Console.WriteLine("Kontrola radia:");
+                autoWithRadio.Radio.PreladNaPredvolbu(5);
+                Console.WriteLine();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Chyba: {ex.Message}");
+                Console.WriteLine();
+            }
+
+
+
+
         }
     }
 }
