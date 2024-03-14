@@ -11,8 +11,10 @@ namespace CV06
                 new Kruh(2.5),
                 new Obdelnik(3, 4),
                 new Trojuhelnik(5, 7),
-                new Valec(2, 5)
-                // Přidejte další objekty podle potřeby
+                new Valec(2, 5),
+                new Koule(3),
+                new Jehlan(4, 6),
+                new PravouhlyKvadr(2, 3, 4)
             };
 
             double celkovaPlocha = 0;
