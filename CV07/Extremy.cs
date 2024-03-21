@@ -33,24 +33,33 @@ namespace CV07
             return min;
         }
 
-        public static string NajkratsiString(string[] pole)
+        // Přetížené metody pro string s kulturově nezávislým porovnáním
+        public static string Nejvetsi(string[] pole)
         {
             if (pole == null || pole.Length == 0)
-            {
                 throw new ArgumentException("Pole je prázdné nebo null");
-            }
 
-            string NajkratsiString = pole[0];
-            foreach (string retazec in pole)
+            string max = pole[0];
+            foreach (string item in pole)
             {
-                if (string.Length < NajkratsiString.Length)
-                {
-                    NajkratsiString = retazec;
-                }
-                
+                if (string.Compare(item, max, StringComparison.InvariantCulture) > 0)
+                    max = item;
             }
-            return NajkratsiString;
+            return max;
+        }
 
+        public static string Nejmensi(string[] pole)
+        {
+            if (pole == null || pole.Length == 0)
+                throw new ArgumentException("Pole je prázdné nebo null");
+
+            string min = pole[0];
+            foreach (string item in pole)
+            {
+                if (string.Compare(item, min, StringComparison.InvariantCulture) < 0)
+                    min = item;
+            }
+            return min;
         }
     }
 }
