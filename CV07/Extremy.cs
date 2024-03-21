@@ -1,65 +1,87 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace CV07
 {
-    public class Extremy
+    public static class Extremy
     {
+        // Statická metoda pro nalezení největšího prvku v poli
         public static T Nejvetsi<T>(T[] pole) where T : IComparable
         {
             if (pole == null || pole.Length == 0)
-                throw new ArgumentException("Pole je prázdné nebo null");
-
-            T max = pole[0];
-            foreach (T item in pole)
             {
-                if (item.CompareTo(max) > 0)
-                    max = item;
+                throw new ArgumentException("Pole nemůže být null nebo prázdné.");
             }
-            return max;
+
+            T nejvetsi = pole[0];
+            foreach (T prvek in pole)
+            {
+                if (prvek.CompareTo(nejvetsi) > 0)
+                {
+                    nejvetsi = prvek;
+                }
+            }
+            return nejvetsi;
         }
 
+        // Statická metoda pro nalezení nejmenšího prvku v poli
         public static T Nejmensi<T>(T[] pole) where T : IComparable
         {
             if (pole == null || pole.Length == 0)
-                throw new ArgumentException("Pole je prázdné nebo null");
-
-            T min = pole[0];
-            foreach (T item in pole)
             {
-                if (item.CompareTo(min) < 0)
-                    min = item;
+                throw new ArgumentException("Pole nemůže být null nebo prázdné.");
             }
-            return min;
+
+            T nejmensi = pole[0];
+            foreach (T prvek in pole)
+            {
+                if (prvek.CompareTo(nejmensi) < 0)
+                {
+                    nejmensi = prvek;
+                }
+            }
+            return nejmensi;
         }
 
-        // Přetížené metody pro string s kulturově nezávislým porovnáním
-        public static string Nejvetsi(string[] pole)
+        // Statická metoda pro nalezení nejdelšího řetězce v poli
+        public static string NejdelsiRetazec(string[] pole)
         {
             if (pole == null || pole.Length == 0)
-                throw new ArgumentException("Pole je prázdné nebo null");
-
-            string max = pole[0];
-            foreach (string item in pole)
             {
-                if (string.Compare(item, max, StringComparison.InvariantCulture) > 0)
-                    max = item;
+                throw new ArgumentException("Pole řetězců nemůže být null nebo prázdné.");
             }
-            return max;
+
+            string nejdelsiRetazec = pole[0];
+            foreach (string retazec in pole)
+            {
+                if (retazec.Length > nejdelsiRetazec.Length)
+                {
+                    nejdelsiRetazec = retazec;
+                }
+            }
+            return nejdelsiRetazec;
         }
 
-        public static string Nejmensi(string[] pole)
+        // Statická metoda pro nalezení nejkratšího řetězce v poli
+        public static string NejkratsiRetazec(string[] pole)
         {
             if (pole == null || pole.Length == 0)
-                throw new ArgumentException("Pole je prázdné nebo null");
-
-            string min = pole[0];
-            foreach (string item in pole)
             {
-                if (string.Compare(item, min, StringComparison.InvariantCulture) < 0)
-                    min = item;
+                throw new ArgumentException("Pole řetězců nemůže být null nebo prázdné.");
             }
-            return min;
+
+            string nejkratsiRetazec = pole[0];
+            foreach (string retazec in pole)
+            {
+                if (retazec.Length < nejkratsiRetazec.Length)
+                {
+                    nejkratsiRetazec = retazec;
+                }
+            }
+            return nejkratsiRetazec;
         }
     }
 }
