@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 
 namespace CV07
 {
@@ -30,6 +31,26 @@ namespace CV07
                     min = item;
             }
             return min;
+        }
+
+        public static string NajkratsiString(string[] pole)
+        {
+            if (pole == null || pole.Length == 0)
+            {
+                throw new ArgumentException("Pole je prázdné nebo null");
+            }
+
+            string NajkratsiString = pole[0];
+            foreach (string retazec in pole)
+            {
+                if (string.Length < NajkratsiString.Length)
+                {
+                    NajkratsiString = retazec;
+                }
+                
+            }
+            return NajkratsiString;
+
         }
     }
 }
