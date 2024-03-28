@@ -1,85 +1,78 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace cv08
 {
+    // Class representing temperature data for a specific year
     public class YearTemperature
     {
+        // List to store monthly temperature data
         private List<double> monthTemperature;
 
+        // Properties
         public List<double> MonthTemperature
         {
-            get
-            {
-                return monthTemperature;
-            }
-            private set
-            {
-                monthTemperature = value;
-            }
+            get { return monthTemperature; }
+            private set { monthTemperature = value; }
         }
         public int Year { get; set; }
-
         public double MaxTemperature { get; private set; }
-
         public double MinTemperature { get; private set; }
-
         public double AverageTemperature { get; private set; }
 
+        // Constructor
         public YearTemperature(int year, List<double> monthTemperature = null)
         {
-            if (monthTemperature != null)
-            {
-                this.MonthTemperature = monthTemperature;
-                SetMinMaxAverage();
-            }
-            else
-            {
-                this.MonthTemperature = new List<double>();
-            }
-            Year = year;
-        }
+            // Initialize monthTemperature list
+            this.MonthTemperature = monthTemperature ?? new List<double>();
 
-        public void AddMonthTemeperature(double temperature)
-        {
-            monthTemperature.Add(temperature);
+            // Set year
+            Year = year;
+
+            // Calculate min, max, and average temperatures
             SetMinMaxAverage();
         }
 
-        public void Calibration(double CalibrationValue)
+        // Adjust temperature data by a calibration value
+        public void Calibration(double calibrationValue)
         {
-            for (int i = 0; i < monthTemperature.Count(); i++)
+            for (int i = 0; i < monthTemperature.Count; i++)
             {
-                monthTemperature[i] = monthTemperature.ElementAt(i) + CalibrationValue;
+                monthTemperature[i] += calibrationValue;
             }
+
+            // Recalculate min, max, and average temperatures after calibration
+            SetMinMaxAverage();
         }
 
+        // Calculate average temperature
         private void ComputeAverageTemperature()
         {
-            double sumOfTemperature = 0;
-            foreach (var temperature in monthTemperature)
-            {
-                sumOfTemperature += temperature;
-            }
-            AverageTemperature = sumOfTemperature / monthTemperature.Count();
+            double sumOfTemperature = monthTemperature.Sum();
+            AverageTemperature = sumOfTemperature / monthTemperature.Count;
         }
 
+        // Set min, max, and average temperatures
         private void SetMinMaxAverage()
         {
-            List<double> sortHelp = monthTemperature.ToList();
-            sortHelp.Sort();
-            MinTemperature = sortHelp.ElementAt(0);
-            MaxTemperature = sortHelp.Last();
-            ComputeAverageTemperature();
+            if (monthTemperature.Count > 0)
+            {
+                MinTemperature = monthTemperature.Min();
+                MaxTemperature = monthTemperature.Max();
+                ComputeAverageTemperature();
+            }
+            else
+            {
+                // If no temperature data available, set min, max, and average to 0
+                MinTemperature = MaxTemperature = AverageTemperature = 0;
+            }
         }
 
+        // Override ToString method to represent object as string
         public override string ToString()
         {
-            return String.Format("Year {0}: " + String.Join(" ", monthTemperature.Select(r => string.Format("{0:N1}", r)) ), Year);
+            return $"Year {Year}: {string.Join(" ", monthTemperature.Select(r => $"{r:N1}"))}";
         }
-
     }
 }

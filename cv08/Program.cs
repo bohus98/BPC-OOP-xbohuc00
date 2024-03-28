@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Globalization;
 
 namespace cv08
@@ -11,24 +7,44 @@ namespace cv08
     {
         static void Main(string[] args)
         {
-            
-            CultureInfo.CurrentCulture = new CultureInfo("cs-CZ");
-            Console.WriteLine("Archive logic");
-            TemperatureArchive t = new TemperatureArchive();
-            t.Load();
-            Console.WriteLine(t.PrintTemperature());
-            Console.WriteLine(t.AverageMonthlyTemperature());
-            t.Calibration(-0.1);
-            Console.WriteLine("After calibration");
-            Console.WriteLine(t.PrintTemperature());
-            Console.WriteLine(t.findYearTemperature(2019));
-            Console.WriteLine(t.AverageYearTemperature());
-            Console.WriteLine(t.AverageMonthlyTemperature());
-            t.Save();
-            Console.WriteLine();
+            // Uncomment the line below to set the current culture to Czech
+            // CultureInfo.CurrentCulture = new CultureInfo("cs-CZ");
+
+            Console.WriteLine("Temperature Archive");
+            TemperatureArchive temperatureArchive = new TemperatureArchive();
+
+            // Load temperature data from file
+            temperatureArchive.Load();
+
+            // Print loaded temperature data
+            Console.WriteLine("Loaded Temperature Data:");
+            Console.WriteLine(temperatureArchive.PrintTemperature());
+
+            // Print average monthly temperature
+            Console.WriteLine("Average Monthly Temperature:");
+            Console.WriteLine(temperatureArchive.AverageMonthlyTemperature());
+
+            // Calibrate temperature data
+            temperatureArchive.Calibration(-0.1);
+            Console.WriteLine("After Calibration:");
+            Console.WriteLine(temperatureArchive.PrintTemperature());
+
+            // Find temperature data for a specific year
+            Console.WriteLine("Temperature Data for Year 2019:");
+            Console.WriteLine(temperatureArchive.FindYearTemperature(2019));
+
+            // Print average temperature for each year
+            Console.WriteLine("Average Temperature for Each Year:");
+            Console.WriteLine(temperatureArchive.AverageYearTemperature());
+
+            // Print average monthly temperature again
+            Console.WriteLine("Average Monthly Temperature:");
+            Console.WriteLine(temperatureArchive.AverageMonthlyTemperature());
+
+            // Save temperature data to file
+            temperatureArchive.Save();
+
             Console.ReadLine();
-
-
         }
     }
 }

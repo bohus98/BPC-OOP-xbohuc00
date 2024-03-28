@@ -3,143 +3,129 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace cv08
 {
+    // Class for managing temperature data for multiple years
     public class TemperatureArchive
     {
+        // Dictionary to store temperature data for each year
         private SortedDictionary<int, YearTemperature> _archive = new SortedDictionary<int, YearTemperature>();
 
-        private const string MainDirectory = "C:\\Users\\matus\\OneDrive\\Počítač\\OOP\\BPC-OOP-xbohuc00\\cv08";
+        // Directory paths and file names for input and output
+        private const string MainDirectory = "D:\\BPC-OOP\\221536\\cv08";
         private const string InputFile = "inputTemperature.txt";
         private const string OutputFile = "outputTemperature.txt";
 
+        // Add temperature data for a year to the archive
         public void AddToArchive(YearTemperature yearTemperature)
         {
             _archive.Add(yearTemperature.Year, yearTemperature);
         }
 
+        // Load temperature data from file
         public void Load()
         {
             try
             {
-                String path = Path.Combine(MainDirectory, InputFile);
-                StreamReader sr = new StreamReader(path);
-
-                String line = sr.ReadLine();
-                while (line != null)
+                string path = Path.Combine(MainDirectory, InputFile);
+                using (StreamReader sr = new StreamReader(path))
                 {
-                    List<double> temperature = new List<double>();
-                    line.Replace(" ", "");
-                    string[] splitter = line.Split(new Char[] { ':', ';' });
-                    for (int i = 1; i < splitter.Length; i++)
+                    string line;
+                    while ((line = sr.ReadLine()) != null)
                     {
-                        temperature.Add(Convert.ToDouble(splitter[i]));
+                        List<double> temperature = new List<double>();
+                        line = line.Replace(" ", "");
+                        string[] splitter = line.Split(new char[] { ':', ';' });
+                        for (int i = 1; i < splitter.Length; i++)
+                        {
+                            temperature.Add(Convert.ToDouble(splitter[i]));
+                        }
+                        _archive.Add(Convert.ToInt32(splitter[0]), new YearTemperature(Convert.ToInt32(splitter[0]), temperature));
                     }
-                    _archive.Add(Convert.ToInt32(splitter[0]), new YearTemperature(Convert.ToInt32(splitter[0]), temperature));
-
-                    line = sr.ReadLine();
                 }
-                sr.Close();
-
             }
             catch (Exception e)
             {
-                throw new Exception("{0}", e);
+                throw new Exception($"Error loading data: {e.Message}");
             }
         }
 
+        // Save temperature data to file
         public void Save()
         {
             try
             {
-                String path = Path.Combine(MainDirectory, OutputFile);
-                StreamWriter sw = new StreamWriter(path); // append: true
-
-                SortedDictionary<int, YearTemperature>.ValueCollection valueColl =
-                _archive.Values;
-
-                foreach (YearTemperature s in valueColl)
+                string path = Path.Combine(MainDirectory, OutputFile);
+                using (StreamWriter sw = new StreamWriter(path))
                 {
-                    sw.Write(String.Format("{0}: " + String.Join("; ", s.MonthTemperature.Select(r => string.Format("{0:N1}", r))) + "\n", s.Year));
+                    foreach (YearTemperature s in _archive.Values)
+                    {
+                        sw.WriteLine($"{s.Year}: {string.Join("; ", s.MonthTemperature.Select(r => $"{r:N1}"))}");
+                    }
                 }
-                sw.Close();
-
             }
             catch (Exception e)
             {
-                throw new Exception("{0}", e);
+                throw new Exception($"Error saving data: {e.Message}");
             }
         }
 
-        public YearTemperature findYearTemperature(int year)
+        // Find temperature data for a specific year
+        public YearTemperature FindYearTemperature(int year)
         {
-            if (_archive.TryGetValue(year, out YearTemperature value))
-            {
-                return value;
-            }
-            else
-            {
-                return null;
-            }
+            return _archive.TryGetValue(year, out YearTemperature value) ? value : null;
         }
 
+        // Calibrate all temperature data by a given value
         public void Calibration(double calibrationValue)
         {
-            SortedDictionary<int, YearTemperature>.ValueCollection valueColl =
-            _archive.Values;
-            foreach (YearTemperature s in valueColl)
+            foreach (YearTemperature s in _archive.Values)
             {
                 s.Calibration(calibrationValue);
             }
         }
 
+        // Calculate and return the average temperature for each year
         public string AverageYearTemperature()
         {
             StringBuilder ret = new StringBuilder();
-            SortedDictionary<int, YearTemperature>.ValueCollection valueColl = _archive.Values;
-            foreach (var s in valueColl)
+            foreach (var s in _archive.Values)
             {
-                ret = ret.AppendLine(String.Format("{0}:    {1:N1}", s.Year, s.AverageTemperature));
+                ret.AppendLine($"{s.Year}:    {s.AverageTemperature:N1}");
             }
-
             return ret.ToString();
         }
 
+        // Calculate and return the average monthly temperature across all years
         public string AverageMonthlyTemperature()
         {
             StringBuilder ret = new StringBuilder();
-            SortedDictionary<int, YearTemperature>.ValueCollection valueColl = _archive.Values;
             List<double> averageMonthTemperature = new List<double>();
-            double monthAverage;
-            int counter = 0;
             for (int i = 0; i < _archive.FirstOrDefault().Value.MonthTemperature.Count(); i++)
             {
-                monthAverage = 0;
-                counter = 0;
-                foreach (var s in valueColl)
+                double monthAverage = 0;
+                int counter = 0;
+                foreach (var s in _archive.Values)
                 {
                     monthAverage += s.MonthTemperature[i];
                     counter++;
                 }
-                averageMonthTemperature.Add(monthAverage/counter);
+                averageMonthTemperature.Add(monthAverage / counter);
             }
-            ret = ret.AppendLine(String.Format("Average: " + String.Join(" ", averageMonthTemperature.Select(r => string.Format("{0:N1}", r)))));
+            ret.AppendLine($"Average: {string.Join(" ", averageMonthTemperature.Select(r => $"{r:N1}"))}");
             return ret.ToString();
         }
+
+        // Print temperature data for all years
         public string PrintTemperature()
         {
             StringBuilder ret = new StringBuilder();
-            SortedDictionary<int, YearTemperature>.ValueCollection valueColl = _archive.Values;
-            foreach (var s in valueColl)
+            foreach (var s in _archive.Values)
             {
-                ret = ret.AppendLine(String.Format("{0}", s));
-                //Console.WriteLine("Value = {0}", s);
+                ret.AppendLine($"{s}");
             }
-
             return ret.ToString();
         }
-
     }
 }
