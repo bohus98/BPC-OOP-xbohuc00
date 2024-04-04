@@ -10,6 +10,7 @@ namespace cv08
             // Uncomment the line below to set the current culture to Czech
             // CultureInfo.CurrentCulture = new CultureInfo("cs-CZ");
 
+
             Console.WriteLine("Temperature Archive");
             TemperatureArchive temperatureArchive = new TemperatureArchive();
 

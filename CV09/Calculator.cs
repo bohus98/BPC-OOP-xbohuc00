@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace cv09
+namespace CV09
 {
     public class Calculator
     {
@@ -23,8 +23,7 @@ namespace cv09
             Plus,
             Minus,
             Multiply,
-            Divide,
-            Power
+            Divide
         };
         private Operation _operation;
 
@@ -66,12 +65,7 @@ namespace cv09
                     _state = State.Operation;
                     _operation = Operation.Divide;
                     break;
-                case "x^2":
-                    _state = State.Result;
-                    _operation = Operation.Power;
-                    Result();
-                    Reset();
-                    break;
+
                 case "=":
                     _state = State.Result;
                     Result();
@@ -92,10 +86,10 @@ namespace cv09
                     secondNum = "0";
                     result = "0";
                     break;
-                case "M":
+                case "MR":
                     if (_state == State.FirstNum)
                     {
-                        if(Memory == "M")
+                        if (Memory == "M")
                         {
                             firstNum = Double.NaN.ToString();
                         }
@@ -114,6 +108,50 @@ namespace cv09
                         {
                             secondNum = Memory;
                         }
+                    }
+                    break;
+                case "MC":
+                    _state = State.FirstNum;
+                    Memory = "0";
+                    Display = "0";
+                    firstNum = "0";
+                    secondNum = "0";
+                    result = "0";
+                    break;
+                case "M+":
+                    double currentNum = Convert.ToDouble(Display);
+                    double memoryValue = Convert.ToDouble(Memory);
+                    double resultMPlus = currentNum + memoryValue;
+                    Memory = resultMPlus.ToString();
+                    break;
+                case "M-":
+                    double currentNumMMinus = Convert.ToDouble(Display);
+                    double memoryValueMMinus = Convert.ToDouble(Memory);
+                    double resultMMinus = memoryValueMMinus - currentNumMMinus;
+                    Memory = resultMMinus.ToString();
+                    break;
+                case "MS":
+                    if (_state == State.FirstNum || _state == State.Result) // Pokud je kalkulačka v režimu zadávání prvního čísla nebo v režimu výsledku
+                    {
+                        Memory = Display; // Uložte aktuálně zobrazené číslo do paměti
+                    }
+                    break;
+                case "&lt;-":
+                    if (Display.Length > 1 && Display != "0")
+                    {
+                        Display = Display.Substring(1) + Display[0];
+                    }
+                    break;
+                case "CE":
+                    if (_state == State.FirstNum)
+                    {
+                        Display = "0";
+                        firstNum = "0";
+                    }
+                    else if (_state == State.SecondNum)
+                    {
+                        Display = "0";
+                        secondNum = "0";
                     }
                     break;
 
@@ -196,33 +234,16 @@ namespace cv09
             double firstNumber = 0;
             double secondNumber = 0;
             double res = 0;
-            // case for power to convert only first number for power or both
-            switch (_operation)
+
+            try
             {
-
-                case Operation.Power:
-                    try
-                    {
-                        firstNumber = Convert.ToDouble(firstNum);
-                    }
-                    catch (Exception)
-                    {
-                        firstNumber = 0;
-                    }
-                    break;
-                default:
-                    try
-                    {
-                        firstNumber = Convert.ToDouble(firstNum);
-                        secondNumber = Convert.ToDouble(secondNum);
-                    }
-                    catch (Exception)
-                    {
-                        firstNumber = 0;
-                        secondNumber = 0;
-                    }
-                    break;
-
+                firstNumber = Convert.ToDouble(firstNum);
+                secondNumber = Convert.ToDouble(secondNum);
+            }
+            catch (Exception)
+            {
+                firstNumber = 0;
+                secondNumber = 0;
             }
 
             switch (_operation)
@@ -246,13 +267,9 @@ namespace cv09
                         res = firstNumber / secondNumber;
                     }
                     break;
-                case Operation.Power:
-                    res = firstNumber * firstNumber;
-                    break;
             }
 
             this.result = "" + res;
         }
     }
-
 }
