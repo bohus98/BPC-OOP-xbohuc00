@@ -136,10 +136,17 @@ namespace CV09
                         Memory = Display; // Uložte aktuálně zobrazené číslo do paměti
                     }
                     break;
-                case "&lt;-":
-                    if (Display.Length > 1 && Display != "0")
+                case "DEL":
+                    if (_state == State.FirstNum || _state == State.SecondNum) // Pokud kalkulačka zobrazuje první nebo druhé číslo
                     {
-                        Display = Display.Substring(1) + Display[0];
+                        if (Display.Length > 1) // Pokud na displeji je více než jedno číslo
+                        {
+                            Display = Display.Substring(0, Display.Length - 1); // Odstraňte poslední znak z řetězce
+                        }
+                        else // Pokud na displeji je pouze jedno číslo
+                        {
+                            Display = "0"; // Nastavte displej na nulu
+                        }
                     }
                     break;
                 case "CE":
